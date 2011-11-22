@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/exitLayout"
+    >
+    
+    <ImageView 
+   	    android:id="@+id/exitImage"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:src="@drawable/exit_large"
+    />
+    
+    <Button 
+        android:id="@+id/okButton"
+    	android:layout_width="30dp"
+    	android:layout_height="30dp"
+    	android:layout_marginLeft="7dp"
+    	android:layout_marginBottom="7dp"
+    	android:layout_alignBottom="@id/exitImage"
+    	android:layout_alignLeft="@id/exitImage"
+    	android:background="@layout/ok_button"
+    	android:enabled="true"/>
+   <Button 
+        android:id="@+id/cancelButton"
+    	android:layout_width="30dp"
+    	android:layout_height="30dp"
+    	android:layout_marginRight="7dp"
+    	android:layout_marginBottom="7dp"
+    	android:layout_alignBottom="@id/exitImage"
+    	android:layout_alignRight="@id/exitImage"
+    	android:background="@layout/cancel_button"
+    	android:enabled="true"/>
+</RelativeLayout>

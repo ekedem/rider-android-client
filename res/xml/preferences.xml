@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+ 
+ <PreferenceCategory android:title="@string/settingsMenu">
+
+<CheckBoxPreference
+   android:key="showAllStations"
+   android:title="@string/showAllStationsText"
+   android:summary="@string/showAllStationsHint"
+   android:defaultValue="false"
+   />
+<CheckBoxPreference
+    android:title="@string/updateLinesText"
+    android:summary="@string/updateLinesHint"
+    android:key="updateLines"
+    android:defaultValue="false"
+     />
+</PreferenceCategory>
+</PreferenceScreen>

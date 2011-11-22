@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+ 	android:id="@+id/navigate_layout"
+	android:orientation="vertical"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content">
+	
+<ImageView
+	android:layout_height="wrap_content" 
+	android:id="@+id/imageNavPopup"
+	android:src="@drawable/navigation" 
+	android:layout_width="wrap_content"/>
+	
+<Button 
+        android:id="@+id/okButtonNav"
+    	android:layout_width="40dp"
+    	android:layout_height="40dp"
+    	android:layout_marginLeft="9dp"
+    	android:layout_marginBottom="8dp"
+    	android:layout_alignBottom="@id/imageNavPopup"
+    	android:layout_alignLeft="@id/imageNavPopup"
+    	android:background="@layout/ok_button"
+    	android:enabled="true"/>
+<Button  
+        android:id="@+id/cancelButtonNav"
+    	android:layout_width="40dp"
+    	android:layout_height="40dp"
+    	android:layout_marginRight="10dp"
+    	android:layout_marginBottom="8dp"
+    	android:layout_alignBottom="@id/imageNavPopup"
+    	android:layout_alignRight="@id/imageNavPopup"
+    	android:background="@layout/cancel_button"
+    	android:enabled="true"/>
+
+<EditText
+	android:id="@+id/destionation_editext"
+	android:layout_width="210dp"
+	android:hint="@string/destinationAddressHint"
+	android:layout_marginBottom="20dp"
+	android:layout_centerHorizontal="true"
+	android:gravity="right"
+	android:layout_above="@id/cancelButtonNav"
+	android:background="@android:color/transparent"
+	android:layout_height="40dp"/>
+    	
+<EditText
+	android:id="@+id/source_editext"
+	android:layout_width="210dp"
+	android:hint="@string/sourceAddressHint"
+	android:layout_centerHorizontal="true"
+	android:background="@android:color/transparent"
+	android:layout_above="@id/destionation_editext"
+	android:gravity="right"
+	android:layout_marginBottom="10dp"
+	android:layout_height="40dp"/>
+
+</RelativeLayout>

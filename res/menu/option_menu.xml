@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+   	 
+   	<item android:id="@+id/lineItem"
+    	  android:icon="@drawable/menu_btn__line"
+          android:title="@string/lineMenu" />
+    <item android:id="@+id/navigationItem"
+    	  android:icon="@drawable/menu_btn__navigate"
+          android:title="@string/navigateMenu" />
+    
+    <!--
+    <item android:id="@+id/exitItem"
+    	  android:icon="@drawable/exit_26"
+          android:title="@string/exitMenu" />
+    -->
+    
+    <item android:id="@+id/showMeItem"
+   		  android:icon="@drawable/menu_btn__show_me"
+          android:title="@string/showMeMenu"/>
+     <item android:id="@+id/checkInItem"
+    	  android:icon="@drawable/menu_btn__check_in"
+          android:title="@string/checkInMenu"/>
+     <item android:id="@+id/settingsItem"
+     	  android:icon="@drawable/menu_btn__config"
+          android:title="@string/settingsMenu"/>
+     <!-- 
+     <item android:id="@+id/searchItem"
+          android:title="@string/searchMenu"/>
+     <item android:id="@+id/clearMapItem"
+          android:title="@string/clearMenu"/>
+     <item android:id="@+id/helpItem"
+     	  android:icon="@drawable/help_36"
+          android:title="@string/helpMenu"/>
+     <item android:id="@+id/reportItem"
+     	  android:icon="@drawable/report_36"
+          android:title="@string/reportMenu"/>
+     <item android:id="@+id/layersItem"
+    	  android:icon="@drawable/layersitem"
+          android:title="@string/layersMenu" >
+     
+          <menu>
+          <group android:checkableBehavior="single">
+	        <item android:id="@+id/mapLayoutItem"
+	              android:title="@string/mapOptionLayersMenu" 
+	              android:checked="true"/>
+	        <item android:id="@+id/sateliteLayoutItem"
+	              android:title="@string/satelliteOptionLayersMenu" />
+    	  </group>
+    	  </menu>
+    </item>
+     -->
+</menu>   

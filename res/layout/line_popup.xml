@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+ 	android:id="@+id/line_layout"
+	android:orientation="vertical"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	>
+	
+<ImageView
+	android:layout_height="wrap_content" 
+	android:id="@+id/imageLinePopup"
+	android:layout_width="wrap_content"/>
+	
+<Button 
+        android:id="@+id/okButtonLine"
+    	android:layout_width="40dp"
+    	android:layout_height="40dp"
+    	android:layout_marginLeft="10dp"
+    	android:layout_marginBottom="9dp"
+    	android:layout_alignBottom="@id/imageLinePopup"
+    	android:layout_alignLeft="@id/imageLinePopup"
+    	android:background="@layout/ok_button"
+    	android:enabled="true"/>
+<Button 
+        android:id="@+id/cancelButtonLine"
+    	android:layout_width="40dp"
+    	android:layout_height="40dp"
+    	android:layout_marginRight="10dp"
+    	android:layout_marginBottom="9dp"
+    	android:layout_alignBottom="@id/imageLinePopup"
+    	android:layout_alignRight="@id/imageLinePopup"
+    	android:background="@layout/cancel_button"
+    	android:enabled="true"/>
+
+<Spinner
+	android:layout_height="wrap_content" 
+	android:id="@+id/linesSpinner"
+	android:layout_margin="18dp" 
+	android:layout_centerHorizontal="true"
+	android:layout_width="110dp"
+	android:layout_above="@id/cancelButtonLine"
+	android:background="@android:color/transparent"
+	/>
+
+</RelativeLayout>

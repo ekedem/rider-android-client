@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, MainActivity!</string>
+    <string name="app_name">Rider</string>
+<string name="APIMapKey">0Dz5aFbBDXjnUgvapaWh2thyABABOdqIM3TJb1A</string>
+<string name="linesChooserTitle">Choose a line number</string>
+<string name="email_hint">Email Address</string>
+<string name="password_hint">Password</string>
+<string name="login_button">Ride On</string>
+<string name="register_button">Register</string>
+<string name="send_button">Send</string>
+<string name="cancel_button">Cancel</string>
+<string name="my_current_location">My Current Location</string>
+<string name="status_welcome_message">Welcome To Rider</string>
+<string name="checkInMenu">Check In</string>
+<string name="navigateMenu">Navigate</string>
+<string name="lineMenu">Line</string>
+<string name="exitMenu">Exit</string>
+<string name="showMeMenu">Show me</string>
+<string name="searchMenu">Search</string>
+<string name="clearMenu">Clear</string>
+<string name="helpMenu">Help</string>
+<string name="reportMenu">Report</string>
+<string name="layersMenu">Layers</string>
+<string name="mapOptionLayersMenu">Map</string>
+<string name="satelliteOptionLayersMenu">Satelite</string>
+<string name="locale">English</string>
+</resources>

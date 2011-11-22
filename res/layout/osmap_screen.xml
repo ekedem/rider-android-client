@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="fill_parent"
+     android:layout_height="fill_parent"
+     android:orientation="vertical"
+     android:id="@+id/map_screen"
+     >
+     
+     
+     <org.osmdroid.views.MapView
+		    android:id="@+id/osmapview"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:clickable="true"
+		    android:editable="true"
+     /> 
+    
+			<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:orientation="horizontal" 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" 
+				android:background="@drawable/statusbar_wave_400x50"
+				android:layout_weight="1"
+				>
+				
+				<ImageView
+					android:id="@+id/exitButtonBarOS"
+					android:layout_width="wrap_content"
+     				android:layout_height="wrap_content"
+     				android:src="@drawable/exit_btn"
+     				android:layout_marginLeft="5dp"
+     				android:layout_marginTop="5dp"
+				/> 
+				
+				<ImageView
+					android:id="@+id/infoButtonBarOS"
+					android:layout_width="wrap_content"
+     				android:layout_height="wrap_content"
+     				android:src="@layout/status_info_button"
+     				android:layout_marginLeft="35dp"
+     				android:layout_marginTop="5dp"
+				/>
+				
+				<ImageView
+					android:id="@+id/internetButtonBarOS"
+					android:layout_width="wrap_content"
+     				android:layout_height="wrap_content"
+     				android:src="@drawable/earth_off"
+     				android:layout_marginLeft="290dp"
+     				android:layout_marginTop="5dp"
+				/>
+				
+				<ImageView
+					android:id="@+id/connectionButtonBarOS"
+					android:layout_width="wrap_content"
+     				android:layout_height="wrap_content"
+     				android:src="@drawable/connection_off"
+     				android:layout_marginLeft="255dp"
+     				android:layout_marginTop="5dp"
+				/>
+				
+			</RelativeLayout>
+</FrameLayout>
+   

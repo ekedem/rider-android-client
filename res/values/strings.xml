@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, MainActivity!</string>
+    <string name="app_name">Rider</string>
+	<string name="APIMapKeYAEL">0Dz5aFbBDXjnUgvapaWh2thyABABOdqIM3TJb1A</string>
+	<string name="linesChooserTitle">בחר קו אוטובוס</string>
+	<string name="email_hint">Email</string>
+	<string name="password_hint">Password</string>
+	<string name="login_button">התחבר</string>
+	<string name="register_button">הרשם</string>
+	<string name="send_button">שלח</string>
+	<string name="cancel_button">ביטול</string>
+	<string name="my_current_location">מיקום נוכחי</string>
+	<string name="status_welcome_message">ברוכים הבאים ל-RIDER</string>
+	<string name="checkInMenu">צ"'"ק אין</string> 
+	<string name="navigateMenu">ניווט</string>
+	<string name="lineMenu">קו</string>
+	<string name="exitMenu">יציאה</string>
+	<string name="showMeMenu">הראה אותי</string>
+	<string name="searchMenu">חיפוש</string>
+	<string name="clearMenu">נקה מפה</string>
+	<string name="helpMenu">עזרה</string>
+	<string name="reportMenu">דיווח</string>
+	<string name="layersMenu">שכבות</string>
+	<string name="mapOptionLayersMenu">רגיל</string>
+	<string name="satelliteOptionLayersMenu">לווין</string>
+	<string name="locale">Hebrew</string>
+	<string name="settingsMenu">הגדרות</string>
+	<string name="APIMapKeySHARK">0Dz5aFbBDXjmXlAjpvw1vdQcqoEfPCf386pTyOw</string>
+	<string name="APIMapKey">0Dz5aFbBDXjn5FlFgXQAM867aE8Mu8_JqGjltoA</string>
+	<string name="sourceAddressHint">הכנס כתובת מוצא</string>
+	<string name="destinationAddressHint">הכנס כתובת יעד</string>
+<string name="APIMapKeyYasmin">0Dz5aFbBDXjn5FlFgXQAM867aE8Mu8_JqGjltoA</string>
+<string name="updateButton">עדכן</string>
+<string name="showAllStationsText">הצג את כל התחנות</string>
+
+<string name="showAllStationsHint">סמנו אם ברצונכם לראות את כל התחנות במסלול</string>
+<string name="updateLinesHint">לחץ כאן אם ברצונך לעדכן את מספרי קווי האוטובוס</string>
+<string name="updateLinesText">עדכן קווי אוטובוס</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/errorLayout"
+    >
+    
+    <ImageView 
+   	    android:id="@+id/errorImage"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:src="@drawable/error_help_us"
+    />
+    
+    <Button 
+        android:id="@+id/sendButtonError"
+    	android:layout_width="50dp"
+    	android:layout_height="30dp"
+    	android:layout_marginLeft="7dp"
+    	android:layout_marginBottom="7dp"
+    	android:background="@layout/send_button"
+    	android:layout_alignBottom="@id/errorImage"
+    	android:layout_alignLeft="@id/errorImage"
+    	android:enabled="true"/>
+   <Button 
+        android:id="@+id/cancelButtonError"
+    	android:layout_width="30dp"
+    	android:layout_height="30dp"
+    	android:layout_marginRight="7dp"
+    	android:layout_marginBottom="7dp"
+    	android:background="@layout/cancel_button"
+    	android:layout_alignBottom="@id/errorImage"
+    	android:layout_alignRight="@id/errorImage"
+    	android:enabled="true"/>
+</RelativeLayout>
