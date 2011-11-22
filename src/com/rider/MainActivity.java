@@ -419,7 +419,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				boolean showAllStations = prefs.getBoolean("showAllStations", false);;
 
 				try {
-					Station firstStation = stations.get(0);
+					Station closestStation = stations.get(result.getClosestStationIndex());
 
 					// new api which shows all stations
 					if (mapView != null) {
@@ -427,9 +427,9 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 						ArrayList<OverlayItem> overlays = new ArrayList<OverlayItem>();
 						GeoPoint geo = null;
 						Station station = null;
-						String currentType = firstStation.getType();
+						String currentType = closestStation.getType();
 						for(int i=0 ; i < stations.size() ; i++) {
-							if (showAllStations || (i == 0)) {
+							if (showAllStations || (i == result.getClosestStationIndex())) {
 								station = stations.get(i);
 								
 								if (!currentType.equals(station.getType())){
@@ -447,9 +447,9 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 						ArrayList<org.osmdroid.views.overlay.OverlayItem> overlays = new ArrayList<org.osmdroid.views.overlay.OverlayItem>();
 						org.osmdroid.util.GeoPoint geo = null;
 						Station station = null;
-						String currentType = firstStation.getType();
+						String currentType = closestStation.getType();
 						for(int i=0 ; i < stations.size() ; i++) {
-							if (showAllStations || (i == 0)) {
+							if (showAllStations || (i == result.getClosestStationIndex())) {
 								station = stations.get(i);
 								if (!currentType.equals(station.getType())){
 									currentType = station.getType();
@@ -463,9 +463,9 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 						addOSOverlayToMap(overlays);
 					}
 
-					ui.setBarTextHeader(firstStation.getLineNumber());
+					ui.setBarTextHeader(closestStation.getLineNumber());
 					progressDialog.dismiss();
-					showLocation(Double.parseDouble(firstStation.getLatitude()), Double.parseDouble(firstStation.getLongitude()));
+					showLocation(Double.parseDouble(closestStation.getLatitude()), Double.parseDouble(closestStation.getLongitude()));
 					// returning the default marker
 					mapStationsMarkers.setDefaultMarker(MainActivity.this.getResources().getDrawable(R.drawable.icon_bus));
 				} catch (Exception e) {

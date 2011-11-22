@@ -225,7 +225,7 @@ public class RiderUi {
 			public void run() {
 				if (RiderUi.this.currentViewId == R.layout.map_screen){
 					final Button header = (Button) viewOwner.findViewById(R.id.textHeaderGoogle);
-					header.setText(text);
+					header.setText(getActivity().getResources().getString(R.string.linePrefixTopBar) + " " + text);
 				}
 			}
 		});

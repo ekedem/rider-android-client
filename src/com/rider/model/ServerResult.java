@@ -16,6 +16,7 @@ public class ServerResult {
 	private boolean loginStatus;
 	private ArrayList<String> lines;
 	private ArrayList<Station> stations;
+	private int closestStationIndex;
 	
 	public ServerResult() {
 		this.lines = new ArrayList<String>();
@@ -25,6 +26,14 @@ public class ServerResult {
 	
 	public ArrayList<Station> getStations() {
 		return stations;
+	}
+	
+	public int getClosestStationIndex() {
+		return closestStationIndex;
+	}
+	
+	public void setClosestStationIndex(String closestIndex) {
+		this.closestStationIndex = Integer.parseInt(closestIndex);
 	}
 	
 	public void setStation(Station station) {

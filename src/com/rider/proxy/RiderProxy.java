@@ -76,7 +76,7 @@ public class RiderProxy {
 					}
 				} catch (Exception e) {
 					// when there is a problem connecting to the server
-					notifyFailure(e.toString());
+					notifyFailure(e.toString() + "\n Login/Register resource, email= " + email);
 				}
 			}
 		};
@@ -108,7 +108,7 @@ public class RiderProxy {
 	 * @param transportID
 	 */
 	public void navigationRequestToServer(double sourceLatitude,double sourceLongitude,
-			double destLatitude,double destLongitude, int userID, int transportID){
+			double destLatitude,double destLongitude, final int userID, final int transportID){
 
 		final String url = baseUrl + NAVIGATE_RESOURCE + "&sourceLat=" + sourceLatitude + "&sourceLong=" + sourceLongitude
 		+ "&destLat=" + destLatitude + "&destLong=" + destLongitude 
@@ -127,7 +127,7 @@ public class RiderProxy {
 					}
 				} catch (Exception e) {
 					// when there is a problem connecting to the server
-					notifyFailure(e.toString());
+					notifyFailure(e.toString() + " : Navigation resource, userID= " + userID + ", transportID= " + transportID);
 				}
 			}
 		};
@@ -139,7 +139,7 @@ public class RiderProxy {
 	 * @param line - the line which the user is riding on
 	 * @param userID - the id of the user
 	 */
-	public void checkInRequestToServer(int line,int userID){
+	public void checkInRequestToServer(final int line,final int userID){
 
 		final String url = baseUrl + CHECKIN_RESOURCE + "&line=" + line + "&userID=" + userID;
 		Runnable task = new Runnable() {
@@ -151,7 +151,7 @@ public class RiderProxy {
 					}
 				} catch (Exception e) {
 					// when there is a problem connecting to the server
-					notifyFailure(e.toString());
+					notifyFailure(e.toString() + " : Checkin resource, line= " + line + ", userID= " + userID);
 				}
 			}
 		};
@@ -164,7 +164,7 @@ public class RiderProxy {
 	 * @param userID - the user id
 	 * @param latitude/longitude - the last known location of the user
 	 */
-	public void LineRequestToServer(int line,int userID,double latitude,double longitude){
+	public void LineRequestToServer(final int line,final int userID,double latitude,double longitude){
 
 		final String url = baseUrl + LINE_RESOURCE  + "&line=" + line + "&userID=" + userID 
 		+ "&lat=" + latitude + "&long=" + longitude ;
@@ -182,7 +182,7 @@ public class RiderProxy {
 					}
 				} catch (Exception e) {
 					// when there is a problem connecting to the server
-					notifyFailure(e.toString());
+					notifyFailure(e.toString() + " : Line resource, line= " + line + ", userID= " + userID);
 				}
 			}
 		};
@@ -195,7 +195,7 @@ public class RiderProxy {
 	 * request for updating the lines number
 	 * @param userID 
 	 */
-	public void updateLinesRequestToServer(int userID){
+	public void updateLinesRequestToServer(final int userID){
 
 		final String url = baseUrl + UPDATE_LINE_RESOURCE + "&userID=" + userID;
 		Runnable task = new Runnable() {
@@ -207,7 +207,7 @@ public class RiderProxy {
 					}
 				} catch (Exception e) {
 					// when there is a problem connecting to the server
-					notifyFailure(e.toString());
+					notifyFailure(e.toString() + " : UpdateLines resource, userID= " + userID);
 				}
 			}
 		};

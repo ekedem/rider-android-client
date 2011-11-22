@@ -39,15 +39,16 @@ public class ResultMarshallerJson implements ResultMarshaller {
 	protected ServerResult resolveJson(JSONObject json, String resource) throws JSONException {
 
 		ServerResult result = new ServerResult();
-
+ 
 
 		if (resource.equals(RiderProxy.LINE_RESOURCE)) {
 			result.setStatusResponse("true".equals(json.getString("response").toLowerCase()));
 			// only when the status is true there will be lines to grab
 			if (result.getStatusResponse()) {
 				String company = json.getString("Company");
+				result.setClosestStationIndex(json.getString("closestStationIndex"));
 				for(int i=0 ; i < Integer.parseInt(json.getString("NumberOfStations")) ; i++) {
-					if (i == 0){
+					if (i == result.getClosestStationIndex()){
 						result.getStations().add(new Station(json.getString("stationName" + i), 
 								json.getString("lat" + i), 
 								json.getString("long" + i),
