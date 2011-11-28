@@ -19,6 +19,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -96,11 +97,19 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 	private DBAdapter riderdb;
 	private BroadcastReceiver internetReceiver;
 	private SharedPreferences prefs;
-
+	private Drawable red;
+	private Drawable blue;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		red = MainActivity.this.getResources().getDrawable(R.drawable.icon_bus);
+		blue = MainActivity.this.getResources().getDrawable(R.drawable.icon_bus_blue);
+		red.setBounds(0 - red.getIntrinsicWidth() / 2, 0 - red.getIntrinsicHeight(),red.getIntrinsicWidth() / 2, 0);
+		blue.setBounds(0 - blue.getIntrinsicWidth() / 2, 0 - blue.getIntrinsicHeight(),blue.getIntrinsicWidth() / 2, 0);
+		
 		// listener to the preferences screen
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
@@ -170,7 +179,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				final MapOverlay tempSearchOverlay = new MapOverlay(MainActivity.this,R.drawable.showme_green_icon);
 				userOverlay = tempUserOverlay;
 				searchOverlay = tempSearchOverlay;
-				mapStationsMarkers = new MyMapMarkers(MainActivity.this.getResources().getDrawable(R.drawable.icon_bus),MainActivity.this);
+				mapStationsMarkers = new MyMapMarkers(red,MainActivity.this);
 				mapStationsMarkers.setUi(ui);
 
 				ui.setGoogleMap(true);
@@ -427,17 +436,19 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 						ArrayList<OverlayItem> overlays = new ArrayList<OverlayItem>();
 						GeoPoint geo = null;
 						Station station = null;
-						String currentType = closestStation.getType();
+						String currentType = stations.get(0).getType();
+						Drawable currentStationIcon = red;
 						for(int i=0 ; i < stations.size() ; i++) {
 							if (showAllStations || (i == result.getClosestStationIndex())) {
 								station = stations.get(i);
-								
-								if (!currentType.equals(station.getType())){
-									currentType = station.getType();
-									mapStationsMarkers.setDefaultMarker(MainActivity.this.getResources().getDrawable(R.drawable.icon_bus_blue));
-								}
 								geo = station.getLocation().toGeo();
 								overlays.add(new OverlayItem(geo, station.getName() , station.getLineNumber()));
+								System.out.println("station " + i + ",type = " + station.getType());
+								if (!currentType.equals(station.getType())){
+									currentType = station.getType();
+									currentStationIcon = blue;
+								}
+								overlays.get(i).setMarker(currentStationIcon);
 							}
 						}
 
@@ -467,7 +478,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 					progressDialog.dismiss();
 					showLocation(Double.parseDouble(closestStation.getLatitude()), Double.parseDouble(closestStation.getLongitude()));
 					// returning the default marker
-					mapStationsMarkers.setDefaultMarker(MainActivity.this.getResources().getDrawable(R.drawable.icon_bus));
+//					mapStationsMarkers.setDefaultMarker(red);
 				} catch (Exception e) {
 					progressDialog.dismiss();
 					ui.showErrorDialog("problem parsing the stations from the line request. Client side");
@@ -979,7 +990,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				//				List<Overlay> listOfOverlays = mapView.getOverlays();
 				//				listOfOverlays.remove(mapStationsMarkers);
 				mapStationsMarkers.clear();
-				mapStationsMarkers = new MyMapMarkers(MainActivity.this.getResources().getDrawable(R.drawable.icon_bus),MainActivity.this);
+				mapStationsMarkers = new MyMapMarkers(red,MainActivity.this);
 				mapStationsMarkers.setUi(ui);
 				//				mapView.invalidate();
 			}
