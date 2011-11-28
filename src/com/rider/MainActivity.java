@@ -478,7 +478,6 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 					progressDialog.dismiss();
 					showLocation(Double.parseDouble(closestStation.getLatitude()), Double.parseDouble(closestStation.getLongitude()));
 					// returning the default marker
-//					mapStationsMarkers.setDefaultMarker(red);
 				} catch (Exception e) {
 					progressDialog.dismiss();
 					ui.showErrorDialog("problem parsing the stations from the line request. Client side");
