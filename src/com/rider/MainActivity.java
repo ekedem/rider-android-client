@@ -459,15 +459,17 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 						org.osmdroid.util.GeoPoint geo = null;
 						Station station = null;
 						String currentType = closestStation.getType();
+						Drawable currentStationIcon = red;
 						for(int i=0 ; i < stations.size() ; i++) {
 							if (showAllStations || (i == result.getClosestStationIndex())) {
 								station = stations.get(i);
-								if (!currentType.equals(station.getType())){
-									currentType = station.getType();
-									mapStationsMarkers.setDefaultMarker(MainActivity.this.getResources().getDrawable(R.drawable.icon_bus_blue));
-								}
 								geo = new org.osmdroid.util.GeoPoint(Double.parseDouble(station.getLatitude()), Double.parseDouble(station.getLongitude()));
 								overlays.add(new org.osmdroid.views.overlay.OverlayItem(station.getName() , station.getLineNumber(),geo));
+								if (!currentType.equals(station.getType())){
+									currentType = station.getType();
+									currentStationIcon = blue;
+								}
+								overlays.get(i).setMarker(currentStationIcon);
 							}
 						}
 
@@ -505,12 +507,20 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 						ArrayList<OverlayItem> overlays = new ArrayList<OverlayItem>();
 						GeoPoint geo = null;
 						Station station = null;
-
+						String currentType = stations.get(0).getType();
+						Drawable currentStationIcon = red;
 						for(int i=0 ; i < stations.size() ; i++) {
 							if (showAllStations || (i == 0) || (i == stations.size()-1)) {
 								station = stations.get(i);
 								geo = station.getLocation().toGeo();
-								overlays.add(new OverlayItem(geo, station.getName() , ""));
+								overlays.add(new OverlayItem(geo, station.getName() , station.getLineNumber() + " " + station.getTime()));
+								System.out.println("station " + i + ",type = " + station.getType());
+								if (!currentType.equals(station.getType())){
+									currentType = station.getType();
+									currentStationIcon = blue;
+								}
+								overlays.get(i).setMarker(currentStationIcon);
+								
 							}
 						}
 
@@ -531,6 +541,8 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 						addOSOverlayToMap(overlays);
 					}
+					
+					ui.setBarTextHeader(destStation.getLineNumber());
 					progressDialog.dismiss();
 					showLocation(Double.parseDouble(sourceStation.getLatitude()), Double.parseDouble(sourceStation.getLongitude()));
 				} catch (Exception e) {

@@ -83,7 +83,8 @@ public class ResultMarshallerJson implements ResultMarshaller {
 							json.getString("long" + i),
 							json.getString("line" + i),
 							json.getString("company" + i),
-							json.getString("time" + i)));
+							json.getString("time" + i),
+							json.getString("stationType" + i)));
 				}
 			}
 
