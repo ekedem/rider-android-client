@@ -62,5 +62,19 @@
 				/> 
 				
 			</RelativeLayout>
+			
+	<TextView 
+	    android:id="@+id/currentLocationStatus"
+	    android:layout_width="wrap_content"
+     	android:layout_height="wrap_content"
+     	android:text="ממתין למיקום נוכחי"
+     	android:layout_gravity="bottom|center_horizontal"
+     	android:layout_marginBottom="40dp"
+     	android:textColor="#000"
+     	android:textSize="20dp"
+     	android:background="#CCCCCC"
+     	android:padding="3dp"
+	    />
+	
 </FrameLayout>
    

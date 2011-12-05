@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.opengl.Visibility;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -229,10 +230,20 @@ public class RiderUi {
 				}
 			}
 		});
-		
-		
 	}
 
+	public void setCurrentLocationStatus(final boolean enable){
+		final TextView status = (TextView) viewOwner.findViewById(R.id.currentLocationStatus);
+		if (enable) {
+			status.setEnabled(true);
+			status.setVisibility(View.VISIBLE);
+		}
+		else {
+			status.setEnabled(false);
+			status.setVisibility(View.INVISIBLE);
+		}
+	}
+	
 	public void turnOnGPSNotification() {
 		final ImageView gps;
 		if (googleMap) {
@@ -306,7 +317,9 @@ public class RiderUi {
 			                "Version 1.000 Build 10" +
 			                "<br/>" +
 			                "<br/>" +
-			                "<a href=\"http://www.thesocialrider.com\">www.thesocialrider.com</a>"));
+			                "<a href=\"http://www.thesocialrider.com\">www.thesocialrider.com</a>" +
+			                "<br/>" +
+			                "<a href=\"mailto:oren.levitzky@gmail.com\">Send me an email</a>"));
 		cancelButton.setOnClickListener(new OnClickListener() {
 
 			@Override

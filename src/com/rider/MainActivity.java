@@ -166,8 +166,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				mapView = newMapView;
 				// setting the center of the map to be in Tel Aviv
 				mapControl = mapView.getController();
-				findLocation();
-				mapControl.setCenter(locationToGeo(model.getUser().getLastKnownLatitude(), model.getUser().getLastKnownLongitude()));
+				mapControl.setCenter(locationToGeo(User.TEL_AVIV_LATITUDE, User.TEL_AVIV_LONGITUDE));
 				mapControl.setZoom(14); 
 				// setting the properties of the map
 				mapView.setBuiltInZoomControls(true);
@@ -186,6 +185,10 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 				locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, myLocationListener);
 				updateNotificationStatus();
+				
+				// trying to get the currect location
+				findLocation();
+				showCurrentLocation();
 			}
 
 			public void onLoadOSMapRequest(org.osmdroid.views.MapView mapView) {
@@ -367,10 +370,13 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			 * @param longitude - the updated longitude point
 			 */
 			public void OnLocationUpdate(double latitude, double longitude) {
+				// changing the status on the screen
+				ui.setCurrentLocationStatus(false);
+				
 				// updating the model to save the last known location of the user
 				model.getUser().setLastKnownLatitude(latitude);
 				model.getUser().setLastKnownLongitude(longitude);
-
+				
 				if (mapView != null) {
 					// painting the user location on the screen
 					GeoPoint newLocation = locationToGeo(latitude, longitude);
@@ -530,12 +536,20 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 						ArrayList<org.osmdroid.views.overlay.OverlayItem> overlays = new ArrayList<org.osmdroid.views.overlay.OverlayItem>();
 						org.osmdroid.util.GeoPoint geo = null;
 						Station station = null;
+						String currentType = stations.get(0).getType();
+						Drawable currentStationIcon = red;
 
 						for(int i=0 ; i < stations.size() ; i++) {
 							if (showAllStations || (i == 0) || (i == stations.size()-1)) {
 								station = stations.get(i);
 								geo = new org.osmdroid.util.GeoPoint(Double.parseDouble(station.getLatitude()), Double.parseDouble(station.getLongitude()));
 								overlays.add(new org.osmdroid.views.overlay.OverlayItem(station.getName() , station.getLineNumber(),geo));
+								System.out.println("station " + i + ",type = " + station.getType());
+								if (!currentType.equals(station.getType())){
+									currentType = station.getType();
+									currentStationIcon = blue;
+								}
+								overlays.get(i).setMarker(currentStationIcon);
 							}
 						}
 
@@ -933,16 +947,22 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				try {
 
 					if (mapView != null) {
-						// the last location
-						GeoPoint location = locationToGeo(model.getUser().getLastKnownLatitude(), model.getUser().getLastKnownLongitude());
-						mapControl = mapView.getController();
-						mapControl.animateTo(location);
-						// paint the marker
-						userOverlay.setPoint(location);
-						List<Overlay> listOfOverlays = mapView.getOverlays();
-						listOfOverlays.remove(userOverlay);
-						listOfOverlays.add(userOverlay); 
-						mapView.invalidate();
+						// if there isnt any known location different from the default, tell the user and keep waiting for it
+						if ((model.getUser().getLastKnownLatitude() == User.TEL_AVIV_LATITUDE) || (model.getUser().getLastKnownLongitude() == User.TEL_AVIV_LONGITUDE)) {
+							ui.setCurrentLocationStatus(true);
+						}
+						else {
+							// the last location
+							GeoPoint location = locationToGeo(model.getUser().getLastKnownLatitude(), model.getUser().getLastKnownLongitude());
+							mapControl = mapView.getController();
+							mapControl.animateTo(location);
+							// paint the marker
+							userOverlay.setPoint(location);
+							List<Overlay> listOfOverlays = mapView.getOverlays();
+							listOfOverlays.remove(userOverlay);
+							listOfOverlays.add(userOverlay); 
+							mapView.invalidate();
+						}
 					}
 					else {
 						// the last location
