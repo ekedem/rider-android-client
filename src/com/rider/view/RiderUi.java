@@ -317,9 +317,7 @@ public class RiderUi {
 			                "Version 1.000 Build 10" +
 			                "<br/>" +
 			                "<br/>" +
-			                "<a href=\"http://www.thesocialrider.com\">www.thesocialrider.com</a>" +
-			                "<br/>" +
-			                "<a href=\"mailto:oren.levitzky@gmail.com\">Send me an email</a>"));
+			                "<a href=\"http://www.thesocialrider.com\">www.thesocialrider.com</a>"));
 		cancelButton.setOnClickListener(new OnClickListener() {
 
 			@Override
