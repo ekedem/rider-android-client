@@ -118,12 +118,13 @@ public class RiderProxy {
 				try {
 					ServerResult result = sendRequest(url,NAVIGATE_RESOURCE);
 					
-					if (result.getStatusResponse() == false) {
-						throw new Exception("Server returned false on Navigation request. Server side");
-					}
-					
 					if (proxyListener != null) {
-						proxyListener.onNavigationResultFromServer(result);
+						if (result.getStatusResponse() == false) {
+							proxyListener.onNavigationNotFoundResultFromServer();
+						}
+						else {
+							proxyListener.onNavigationResultFromServer(result);
+						}
 					}
 				} catch (Exception e) {
 					// when there is a problem connecting to the server

@@ -9,11 +9,15 @@
    android:summary="@string/showAllStationsHint"
    android:defaultValue="false"
    />
-<CheckBoxPreference
+<Preference
     android:title="@string/updateLinesText"
     android:summary="@string/updateLinesHint"
     android:key="updateLines"
     android:defaultValue="false"
      />
+ <Preference
+    android:title="@string/contactText"
+    android:summary="@string/contactHint"
+    android:key="contact" />
 </PreferenceCategory>
 </PreferenceScreen>

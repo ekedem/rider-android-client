@@ -23,4 +23,5 @@ public interface RiderProxyListener {
 	public void onLoginRegisterResultFromServer(ServerResult result, String email, String password);
 	public void onUpdateLinesResultFromServer(ArrayList<String> lines);
 	public void onErrorAppReportResultFromServer();
+	public void onNavigationNotFoundResultFromServer();
 }

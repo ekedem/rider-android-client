@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import org.osmdroid.api.IGeoPoint;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -99,17 +100,17 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 	private SharedPreferences prefs;
 	private Drawable red;
 	private Drawable blue;
-	
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		red = MainActivity.this.getResources().getDrawable(R.drawable.icon_bus);
 		blue = MainActivity.this.getResources().getDrawable(R.drawable.icon_bus_blue);
 		red.setBounds(0 - red.getIntrinsicWidth() / 2, 0 - red.getIntrinsicHeight(),red.getIntrinsicWidth() / 2, 0);
 		blue.setBounds(0 - blue.getIntrinsicWidth() / 2, 0 - blue.getIntrinsicHeight(),blue.getIntrinsicWidth() / 2, 0);
-		
+
 		// listener to the preferences screen
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
@@ -185,7 +186,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 				locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, myLocationListener);
 				updateNotificationStatus();
-				
+
 				// trying to get the currect location
 				findLocation();
 				showCurrentLocation();
@@ -372,11 +373,11 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			public void OnLocationUpdate(double latitude, double longitude) {
 				// changing the status on the screen
 				ui.setCurrentLocationStatus(false);
-				
+
 				// updating the model to save the last known location of the user
 				model.getUser().setLastKnownLatitude(latitude);
 				model.getUser().setLastKnownLongitude(longitude);
-				
+
 				if (mapView != null) {
 					// painting the user location on the screen
 					GeoPoint newLocation = locationToGeo(latitude, longitude);
@@ -526,7 +527,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 									currentStationIcon = blue;
 								}
 								overlays.get(i).setMarker(currentStationIcon);
-								
+
 							}
 						}
 
@@ -555,7 +556,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 						addOSOverlayToMap(overlays);
 					}
-					
+
 					ui.setBarTextHeader(destStation.getLineNumber());
 					progressDialog.dismiss();
 					showLocation(Double.parseDouble(sourceStation.getLatitude()), Double.parseDouble(sourceStation.getLongitude()));
@@ -576,7 +577,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 						if (result.isLoginStatus() == true) {
 							model.getUser().setEmail(email);
 							model.getUser().setPassword(password);
-							model.getUser().setUserID(0);
+							model.getUser().setUserID(result.getUserID());
 							updateUserTable();
 
 							//ui.showOSMapScreen();
@@ -592,15 +593,27 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 			@Override
 			public void onUpdateLinesResultFromServer(ArrayList<String> lines) {
-				progressDialog.dismiss();
 				model.setLines(lines);
 				updateLinesTable();
+				progressDialog.dismiss();
 				ui.displayMessage("Lines were successfully updated");
 			}
 
 			@Override
 			public void onErrorAppReportResultFromServer() {
 				progressDialog.dismiss();
+			}
+
+			@Override
+			public void onNavigationNotFoundResultFromServer() {
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						progressDialog.dismiss();
+						ui.showNavigationNotFoundDialog();
+					}
+				});
 			}
 		});
 
@@ -733,12 +746,19 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 	 * add the given overlays to the station overlay on the google map 
 	 * @param overlays - each overlay is a point of a bus station(arraylist)
 	 */
-	private void addOverlayToMap(ArrayList<OverlayItem> overlays){
-		List<Overlay> mapOverlays = mapView.getOverlays();
-		for (int i=0; i < overlays.size() ; i++) {
-			mapStationsMarkers.addOverlay(overlays.get(i));
-		}
-		mapOverlays.add(mapStationsMarkers);
+	private void addOverlayToMap(final ArrayList<OverlayItem> overlays){
+
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				List<Overlay> mapOverlays = mapView.getOverlays();
+				for (int i=0; i < overlays.size() ; i++) {
+					mapStationsMarkers.addOverlay(overlays.get(i));
+				}
+				mapOverlays.add(mapStationsMarkers);
+			}
+		});
 	}
 
 
@@ -1116,16 +1136,35 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 		} catch (Exception e){
 			// some of the recievers are not register yet
 		}
-		
+
 	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-		if (key.equals("updateLines")) {
+//		if (key.equals("updateLines")) {
+//			progressDialog.setMessage("Updating bus lines...");
+//			progressDialog.show();
+//			proxy.updateLinesRequestToServer(model.getUser().getUserID());
+//		}
+
+	}
+
+	
+	@Override
+	protected void onStart() {
+		SharedPreferences mySharedPreferences = getSharedPreferences("myCustomSharedPrefs", Activity.MODE_PRIVATE);
+		if (mySharedPreferences.getBoolean("linesUpdate", false) == true) {
+			System.out.println("linesUpdate found");
 			progressDialog.setMessage("Updating bus lines...");
 			progressDialog.show();
 			proxy.updateLinesRequestToServer(model.getUser().getUserID());
+			mySharedPreferences.edit().remove("linesUpdate").commit();
 		}
+		else if (mySharedPreferences.getBoolean("contact", false) == true) {
+			System.out.println("contact found");
+			mySharedPreferences.edit().remove("contact").commit();
+		}
+		super.onStart();
 	}
 
 }

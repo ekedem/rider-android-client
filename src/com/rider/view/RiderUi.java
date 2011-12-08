@@ -523,6 +523,34 @@ public class RiderUi {
 //		alert.show();
 	}
 
+	
+	/**
+	 * on login failure
+	 */
+	public void showNavigationNotFoundDialog() {
+		final Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_Light_Panel);
+		dialog.requestWindowFeature(dialog.getWindow().FEATURE_NO_TITLE);
+		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.nav_not_found_popup, (ViewGroup) getActivity().findViewById(R.id.navNotFoundLayout)); 
+
+		final Button cancelButton = (Button) layout.findViewById(R.id.cancelButtonErrorNavNotFound);
+
+		cancelButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				dialog.dismiss();
+			}
+		});
+
+		// showing the dialog
+		dialog.setContentView(layout);
+		dialog.show();
+	}
+	
+	
+	
 	/**
 	 * on login failure
 	 */
