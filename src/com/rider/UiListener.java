@@ -28,5 +28,4 @@ public interface UiListener {
 	public void onReportRequest();
 	public void onErrorRequest(String errorMessage);
 	public void onLoadOSMapRequest(org.osmdroid.views.MapView mapView);
-	public void onUpdateLinesRequest();
 }

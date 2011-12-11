@@ -40,6 +40,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -106,6 +107,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// markers icons
 		red = MainActivity.this.getResources().getDrawable(R.drawable.icon_bus);
 		blue = MainActivity.this.getResources().getDrawable(R.drawable.icon_bus_blue);
 		red.setBounds(0 - red.getIntrinsicWidth() / 2, 0 - red.getIntrinsicHeight(),red.getIntrinsicWidth() / 2, 0);
@@ -184,7 +186,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 				ui.setGoogleMap(true);
 
-				locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, myLocationListener);
+				locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 2000, 0, myLocationListener);
 				updateNotificationStatus();
 
 				// trying to get the currect location
@@ -235,12 +237,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 					public void run() {
 						progressDialog.setMessage("Connecting to server...");
 						progressDialog.show();
-
 						proxy.loginAndRegisterRequestToServer(email,password,isRegister);
-
-						//						ui.showMapScreen(mapView);
-
-						//ui.showOSMapScreen();
 					}
 				});
 			}
@@ -330,14 +327,11 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 			@Override
 			public void onReportRequest() {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void onWakeUpRequest() {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
@@ -346,14 +340,6 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				progressDialog.show();
 				proxy.errorAppReportToServer(model.getUser().getUserID(),errorMessage);
 			}
-
-			@Override
-			public void onUpdateLinesRequest() {
-				// TODO Auto-generated method stub
-				//				progressDialog.setMessage("Updating bus lines...");
-				//				progressDialog.show();
-				//				proxy.updateLinesRequestToServer(model.getUser().getUserID());
-			}
 		});
 
 
@@ -361,7 +347,6 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 		locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		myLocationListener = new MyLocationListener(this);
 		myLocationListener.setUi(ui);
-		//		locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, myLocationListener);
 		myLocationListener.setListener(new GpsListener() {
 
 			/**
@@ -432,7 +417,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			@Override
 			public void onLineResultFromServer(ServerResult result) {
 				ArrayList<Station> stations = result.getStations();
-				boolean showAllStations = prefs.getBoolean("showAllStations", false);;
+				boolean showAllStations = prefs.getBoolean(MyPreferences.PREFS_SHOW_ALL_STATAIONS, false);;
 
 				try {
 					Station closestStation = stations.get(result.getClosestStationIndex());
@@ -505,7 +490,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				ArrayList<Station> stations = result.getStations();
 				Station sourceStation = stations.get(0);
 				Station destStation = stations.get(stations.size() - 1);
-				boolean showAllStations = prefs.getBoolean("showAllStations", false);
+				boolean showAllStations = prefs.getBoolean(MyPreferences.PREFS_SHOW_ALL_STATAIONS, false);
 
 				try {
 
@@ -596,7 +581,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				model.setLines(lines);
 				updateLinesTable();
 				progressDialog.dismiss();
-				ui.displayMessage("Lines were successfully updated");
+				ui.displayMessage(getResources().getString(R.string.linesUpdateSuccessfully));
 			}
 
 			@Override
@@ -658,13 +643,6 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 		} catch (Exception e){
 
 		}
-	}
-
-	/**
-	 * update the internet connectivity notification
-	 */
-	public void checkConnectivity(){
-
 	}
 
 	public void loadDatabaseToModel() {
@@ -906,39 +884,6 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			Intent myIntent = new Intent(this, MyPreferences.class);
 			startActivityForResult(myIntent, 0);
 			return true; 
-			//		case R.id.exitItem:
-			//			ui.showExitDialog();
-			//			return true;
-			//		case R.id.layersItem:
-			//			return true;
-			//		case R.id.mapLayoutItem:
-			//			// if the regular map view was clicked - disabling the satellite option
-			//			item.setChecked(true);
-			//			mapView.setSatellite(false);
-			//			mapView.invalidate();
-			//			return true;
-			//		case R.id.sateliteLayoutItem:
-			//			// setting the satellite option
-			//			item.setChecked(true);
-			//			mapView.setSatellite(true);
-			//			mapView.invalidate();
-			//			return true;
-			//		case R.id.helpItem:
-			//			ui.showHelpScreen();
-			//			return true;
-			//		case R.id.reportItem:
-			//			ui.showReportDialog();
-			//			return true;
-			//		case R.id.searchItem:
-			//			ui.showSearchDialog();
-			//			return true;
-			//		case R.id.clearMapItem:
-			//			// clear the search markers from the map. the user marker will always stay
-			//			List<Overlay> listOfOverlays = mapView.getOverlays();
-			//			listOfOverlays.remove(searchOverlay);
-			//			listOfOverlays.remove(mapStationsMarkers);
-			//			mapView.invalidate();
-			//			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -1038,12 +983,9 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 			@Override
 			public void run() {
-				//				List<Overlay> listOfOverlays = mapView.getOverlays();
-				//				listOfOverlays.remove(mapStationsMarkers);
 				mapStationsMarkers.clear();
 				mapStationsMarkers = new MyMapMarkers(red,MainActivity.this);
 				mapStationsMarkers.setUi(ui);
-				//				mapView.invalidate();
 			}
 		});
 	}
@@ -1107,7 +1049,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 	}
 
 	/**
-	 * update the user local database if the user logged in successfully
+	 * update the user local database
 	 */
 	public void updateLinesTable(){
 		try {
@@ -1139,32 +1081,39 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 	}
 
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-//		if (key.equals("updateLines")) {
-//			progressDialog.setMessage("Updating bus lines...");
-//			progressDialog.show();
-//			proxy.updateLinesRequestToServer(model.getUser().getUserID());
-//		}
-
-	}
-
-	
+	/**
+	 * when preferences is changed, the appropriate action is being done and at the end
+	 * the values of the shared preferences are being deleted
+	 */
 	@Override
 	protected void onStart() {
-		SharedPreferences mySharedPreferences = getSharedPreferences("myCustomSharedPrefs", Activity.MODE_PRIVATE);
-		if (mySharedPreferences.getBoolean("linesUpdate", false) == true) {
-			System.out.println("linesUpdate found");
+		SharedPreferences mySharedPreferences = getSharedPreferences(MyPreferences.CUSTOM_PREFS, Activity.MODE_PRIVATE);
+		if (mySharedPreferences.getBoolean(MyPreferences.PREFS_LINES_UPDATE, false) == true) {
 			progressDialog.setMessage("Updating bus lines...");
 			progressDialog.show();
 			proxy.updateLinesRequestToServer(model.getUser().getUserID());
-			mySharedPreferences.edit().remove("linesUpdate").commit();
+			mySharedPreferences.edit().remove(MyPreferences.PREFS_LINES_UPDATE).commit();
 		}
-		else if (mySharedPreferences.getBoolean("contact", false) == true) {
-			System.out.println("contact found");
-			mySharedPreferences.edit().remove("contact").commit();
+		else if (mySharedPreferences.getBoolean(MyPreferences.PREFS_CONTACT, false) == true) {
+			Intent i = new Intent(Intent.ACTION_SEND);
+			i.setType("text/plain");
+			i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"contact@thesocialrider.com"});
+			i.putExtra(Intent.EXTRA_SUBJECT, "Rider report from: " + model.getUser().getEmail());
+			try {
+			    startActivity(Intent.createChooser(i, "Send mail..."));
+			} catch (android.content.ActivityNotFoundException ex) {
+			}
+			
+			mySharedPreferences.edit().remove(MyPreferences.PREFS_CONTACT).commit();
 		}
 		super.onStart();
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

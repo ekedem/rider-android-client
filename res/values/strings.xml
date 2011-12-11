@@ -40,4 +40,5 @@
 <string name="linePrefixTopBar">קו</string>
 <string name="contactText">צור קשר</string>
 <string name="contactHint">לחצו כאן לשליחת מייל </string>
+<string name="linesUpdateSuccessfully">הקווים עודכנו בהצלחה</string>
 </resources>

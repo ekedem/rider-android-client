@@ -205,6 +205,7 @@ public final class R {
         public static final int lineMenu=0x7f07000e;
         public static final int linePrefixTopBar=0x7f070024;
         public static final int linesChooserTitle=0x7f070003;
+        public static final int linesUpdateSuccessfully=0x7f070027;
         public static final int locale=0x7f070018;
         public static final int login_button=0x7f070006;
         public static final int mapOptionLayersMenu=0x7f070016;
