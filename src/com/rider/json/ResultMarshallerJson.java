@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import com.rider.model.Coordinates;
+import com.rider.model.Line;
 import com.rider.model.ServerResult;
 import com.rider.model.Station;
 import com.rider.proxy.RiderProxy;
@@ -27,6 +28,7 @@ public class ResultMarshallerJson implements ResultMarshaller {
 	private static final String LINE_NUMBER_LINE = "lineNumber";
 	private static final String LINE_NUMBER_NAV = "line";
 	private static final String LINE_NUMBER_UPDATELINES = "Line";
+	private static final String LINE_ID_UPDATELINES = "LineDBID";
 	private static final String STATION_TYPE = "stationType";
 	private static final String CLOSEST_STATION_INDEX = "closestStationIndex";
 	private static final String RESPONSE = "response";
@@ -111,8 +113,10 @@ public class ResultMarshallerJson implements ResultMarshaller {
 		} 
 		else if(resource.equals(RiderProxy.UPDATE_LINE_RESOURCE)) {
 			for(int i=0 ; i < Integer.parseInt(json.getString(NUM_OF_LINES)) ; i++) {
-				String line = json.getString(LINE_NUMBER_UPDATELINES + i);
-				result.getLines().add(line);
+				String lineNumber = json.getString(LINE_NUMBER_UPDATELINES + i);
+				String lineID = json.getString(LINE_ID_UPDATELINES + i);
+				System.out.println("Line id = " + lineID + ", Line number = " + lineNumber);
+				result.getLines().add(new Line(lineNumber, lineID));
 			}
 		}
 

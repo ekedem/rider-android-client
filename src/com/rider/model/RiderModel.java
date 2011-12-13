@@ -5,23 +5,23 @@ import java.util.ArrayList;
 public class RiderModel {
 	
 	private User user;
-	private ArrayList<String> lines;
+	private ArrayList<Line> lines;
 	
 	
 	public RiderModel() {
 		this.user = new User();
-		this.lines = new ArrayList<String>();
+		this.lines = new ArrayList<Line>();
 	}
 	
 	public User getUser() {
 		return user;
 	}
 	
-	public void setLines(ArrayList<String> lines) {
+	public void setLines(ArrayList<Line> lines) {
 		this.lines = lines;
 	}
 	
-	public ArrayList<String> getLines() {
+	public ArrayList<Line> getLines() {
 		return lines;
 	}
 
@@ -29,7 +29,17 @@ public class RiderModel {
 		String[] newLines = new String[this.lines.size()];
 		
 		for(int i = 0; i< this.lines.size(); i++){
-			newLines[i] = this.lines.get(i);
+			newLines[i] = this.lines.get(i).getNumber();
+		}
+		
+		return newLines;
+	}
+	
+	public String[] getLinesIDAsArray() {
+		String[] newLines = new String[this.lines.size()];
+		
+		for(int i = 0; i< this.lines.size(); i++){
+			newLines[i] = this.lines.get(i).getId();
 		}
 		
 		return newLines;

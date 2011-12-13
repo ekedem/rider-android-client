@@ -367,6 +367,7 @@ public class RiderUi {
 		// setting the values for the spinner
 		final Spinner linesSpiner = (Spinner) layout.findViewById(R.id.linesSpinner);
 		String[] lines = model.getLinesAsArray();
+		final String[] linesID = model.getLinesIDAsArray();
 		ArrayAdapter<CharSequence> m_adapterForSpinner = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item,lines);
 		m_adapterForSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		linesSpiner.setAdapter(m_adapterForSpinner);
@@ -387,7 +388,7 @@ public class RiderUi {
 
 			@Override
 			public void onClick(View arg0) {
-				listener.onBusNumberChooser((String)linesSpiner.getSelectedItem(), isCheckInRequest);
+				listener.onBusNumberChooser(linesID[linesSpiner.getSelectedItemPosition()], isCheckInRequest);
 				dialog.dismiss();
 			}
 		});

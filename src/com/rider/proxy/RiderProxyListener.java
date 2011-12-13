@@ -2,6 +2,7 @@ package com.rider.proxy;
 
 import java.util.ArrayList;
 
+import com.rider.model.Line;
 import com.rider.model.ServerResult;
 
 
@@ -21,7 +22,7 @@ public interface RiderProxyListener {
 	public void onCheckinResultFromServer(ServerResult result);
 	public void onNavigationResultFromServer(ServerResult result);
 	public void onLoginRegisterResultFromServer(ServerResult result, String email, String password);
-	public void onUpdateLinesResultFromServer(ArrayList<String> lines);
+	public void onUpdateLinesResultFromServer(ArrayList<Line> lines);
 	public void onErrorAppReportResultFromServer();
 	public void onNavigationNotFoundResultFromServer();
 }

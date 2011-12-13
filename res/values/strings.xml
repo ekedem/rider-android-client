@@ -27,7 +27,7 @@
 	<string name="locale">Hebrew</string>
 	<string name="settingsMenu">הגדרות</string>
 	<string name="APIMapKeySHARK">0Dz5aFbBDXjmXlAjpvw1vdQcqoEfPCf386pTyOw</string>
-	<string name="APIMapKey">0Dz5aFbBDXjn5FlFgXQAM867aE8Mu8_JqGjltoA</string>
+	<string name="APIMapKey">0Dz5aFbBDXjmXlAjpvw1vdQcqoEfPCf386pTyOw</string>
 	<string name="sourceAddressHint">הכנס כתובת מוצא</string>
 	<string name="destinationAddressHint">הכנס כתובת יעד</string>
 <string name="APIMapKeyYasmin">0Dz5aFbBDXjn5FlFgXQAM867aE8Mu8_JqGjltoA</string>

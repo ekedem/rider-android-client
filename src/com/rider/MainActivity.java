@@ -25,6 +25,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -34,13 +35,12 @@ import android.util.AttributeSet;
 import android.view.InflateException;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.LayoutInflater.Factory;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.LayoutInflater.Factory;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -56,6 +56,7 @@ import com.rider.googleMap.MyMapMarkers;
 import com.rider.gps.GpsListener;
 import com.rider.gps.MyLocationListener;
 import com.rider.model.Coordinates;
+import com.rider.model.Line;
 import com.rider.model.RiderModel;
 import com.rider.model.ServerResult;
 import com.rider.model.Station;
@@ -159,7 +160,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				};
 				thread.start();
 			}
-
+ 
 			/**
 			 * initial loading and creating of the google map view
 			 * @param mapView - the map view of the app
@@ -192,6 +193,9 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				// trying to get the currect location
 				findLocation();
 				showCurrentLocation();
+				
+				//update line db for first time
+				initLinesDB(model.getUser().getUserID());
 			}
 
 			public void onLoadOSMapRequest(org.osmdroid.views.MapView mapView) {
@@ -577,7 +581,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			}
 
 			@Override
-			public void onUpdateLinesResultFromServer(ArrayList<String> lines) {
+			public void onUpdateLinesResultFromServer(ArrayList<Line> lines) {
 				model.setLines(lines);
 				updateLinesTable();
 				progressDialog.dismiss();
@@ -627,6 +631,21 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 	}
 
 	/**
+	 * first time the user register, the line db will be initialized
+	 */
+	private void initLinesDB(int userID) {
+		riderdb.open();
+		Cursor cLine =  riderdb.getAllLines();
+		if (cLine.moveToNext() == false) {
+			progressDialog.setMessage("Updating bus lines...");
+			progressDialog.show();
+			proxy.updateLinesRequestToServer(userID);
+		}
+		riderdb.close();
+	}
+	
+	
+	/**
 	 * sets the correct notification images for both GPS and INTERNET
 	 */
 	protected void updateNotificationStatus() {
@@ -653,7 +672,8 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 		while (cLine.moveToNext()) {
 			String lineNumber = cLine.getString(1);
-			model.getLines().add(lineNumber);
+			String lineID = cLine.getString(2);
+			model.getLines().add(new Line(lineNumber, lineID));
 		}
 
 		// when there is a register user already in the local database
@@ -894,9 +914,15 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 	 */
 	private void findLocation() {
 		try{
-			Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			if (lastKnownLocation == null) {
+				System.out.println("GPS location");
+				lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			}
+			
 			model.getUser().setLastKnownLatitude(lastKnownLocation.getLatitude());
 			model.getUser().setLastKnownLongitude(lastKnownLocation.getLongitude());
+			
 		} catch (Exception e) {
 		}
 	}
@@ -1056,7 +1082,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			riderdb.open();
 			riderdb.deleteTable(DBAdapter.Tabels.LINES.toString());
 			for(int i = 0; i < model.getLines().size(); i++){
-				riderdb.insertNewLine(model.getLines().get(i));
+				riderdb.insertNewLine(model.getLines().get(i).getNumber(), model.getLines().get(i).getId());
 			}
 			riderdb.close();
 		} catch (Exception e){

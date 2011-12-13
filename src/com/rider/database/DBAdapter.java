@@ -16,13 +16,14 @@ public class DBAdapter {
 	public static final String KEY_PASSWORD = "_password";
 	public static final String KEY_USER_ID = "_userID";
 	public static final String KEY_LINE_NUMBER ="_lineNumber";
+	public static final String KEY_LINE_ID ="_lineID";
 	
 
 	private static final String TAG = "DBAdapter";
 	private static final String DATABASE_NAME = "RiderLocal";
 
 	
-	public static int DATABASE_VERSION = 555;
+	public static int DATABASE_VERSION = 666;
 
 	public enum Tabels {
 		USERS , LINES
@@ -38,7 +39,8 @@ public class DBAdapter {
 	private static final String DATABASE_LINES_CREATE =
 		"create table " + Tabels.LINES.toString() + " (" 
 		+ KEY_ROWID + " integer primary key autoincrement, "
-		+ KEY_LINE_NUMBER + " VARCHAR(10) not null);" ;
+		+ KEY_LINE_NUMBER + " VARCHAR(50) not null, "
+		+ KEY_LINE_ID + " VARCHAR (50));" ;
 
 	private final Context context;   
 	private DatabaseHelper DBHelper;
@@ -94,9 +96,10 @@ public class DBAdapter {
 	}
 	
 	//---insert an item into the database---
-	public long insertNewLine(String line)	{
+	public long insertNewLine(String line, String lineID)	{
 		ContentValues initialValues = new ContentValues();
 
+		initialValues.put(KEY_LINE_ID, lineID);
 		initialValues.put(KEY_LINE_NUMBER, line);
 		
 		return db.insert(Tabels.LINES.toString(), null, initialValues);
@@ -131,7 +134,8 @@ public class DBAdapter {
 	{
 
 		return db.query(Tabels.LINES.toString(), new String[] {
-				KEY_ROWID, 
+				KEY_ROWID,
+				KEY_LINE_ID,
 				KEY_LINE_NUMBER
 				
 		},
@@ -156,7 +160,6 @@ public class DBAdapter {
 		{
 			db.execSQL(DATABASE_USERS_CREATE);
 			db.execSQL(DATABASE_LINES_CREATE);
-			initLines(db);
 		}
 
 		@Override
@@ -167,23 +170,6 @@ public class DBAdapter {
 			db.execSQL("DROP TABLE IF EXISTS " + Tabels.USERS.toString());
 			db.execSQL("DROP TABLE IF EXISTS " + Tabels.LINES.toString());
 			onCreate(db);
-		}
-		
-		private void initLines(SQLiteDatabase db) {
-			ContentValues initialValues = new ContentValues();
-			int[] lines = {142, 18, 289, 271, 7, 26, 61, 141, 160, 173, 240,
-						   139, 100, 7, 2, 189, 171, 140, 22, 33, 72, 104, 6, 
-						   161, 174, 11, 4, 125, 10, 89, 76, 17, 25, 14, 13, 
-						   404, 6, 272, 129, 239, 175, 52, 126, 192, 16, 9, 
-						   139, 3, 40, 119, 1, 58, 75, 37, 41, 275, 163, 
-						   405, 12, 71, 88, 31, 60, 172, 9, 5, 139, 42, 39,
-						   85, 63, 416, 270, 204, 23, 34, 418};
-			
-			for (int i=0 ; i < lines.length ; i++) {
-				initialValues.put(KEY_LINE_NUMBER, lines[i]);
-				db.insert(Tabels.LINES.toString(), null, initialValues);
-				initialValues.clear();
-			}
 		}
 	}    
 

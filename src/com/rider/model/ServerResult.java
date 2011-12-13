@@ -14,12 +14,12 @@ public class ServerResult {
 	private Station destStation;
 	private boolean checkinResult;
 	private boolean loginStatus;
-	private ArrayList<String> lines;
+	private ArrayList<Line> lines;
 	private ArrayList<Station> stations;
 	private int closestStationIndex;
 	
 	public ServerResult() {
-		this.lines = new ArrayList<String>();
+		this.lines = new ArrayList<Line>();
 		this.stations = new ArrayList<Station>();
 		// if not getting this value, prevent from changing direction when not needed (cant be a number grater than 0)
 	}
@@ -92,11 +92,11 @@ public class ServerResult {
 		return loginStatus;
 	}
 	
-	public ArrayList<String> getLines() {
+	public ArrayList<Line> getLines() {
 		return lines;
 	}
 	
-	public void setLines(ArrayList<String> lines) {
+	public void setLines(ArrayList<Line> lines) {
 		this.lines = lines;
 	}
 }
