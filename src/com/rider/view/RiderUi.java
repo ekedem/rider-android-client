@@ -388,7 +388,7 @@ public class RiderUi {
 
 			@Override
 			public void onClick(View arg0) {
-				listener.onBusNumberChooser(linesID[linesSpiner.getSelectedItemPosition()], isCheckInRequest);
+				listener.onBusNumberChooser((String) linesSpiner.getSelectedItem(),linesID[linesSpiner.getSelectedItemPosition()], isCheckInRequest);
 				dialog.dismiss();
 			}
 		});

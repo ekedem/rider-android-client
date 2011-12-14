@@ -23,7 +23,7 @@ public class DBAdapter {
 	private static final String DATABASE_NAME = "RiderLocal";
 
 	
-	public static int DATABASE_VERSION = 666;
+	public static int DATABASE_VERSION = 788;
 
 	public enum Tabels {
 		USERS , LINES
@@ -96,11 +96,11 @@ public class DBAdapter {
 	}
 	
 	//---insert an item into the database---
-	public long insertNewLine(String line, String lineID)	{
+	public long insertNewLine(String lineNumber, String lineID)	{
 		ContentValues initialValues = new ContentValues();
 
+		initialValues.put(KEY_LINE_NUMBER, lineNumber);
 		initialValues.put(KEY_LINE_ID, lineID);
-		initialValues.put(KEY_LINE_NUMBER, line);
 		
 		return db.insert(Tabels.LINES.toString(), null, initialValues);
 	}
@@ -135,8 +135,8 @@ public class DBAdapter {
 
 		return db.query(Tabels.LINES.toString(), new String[] {
 				KEY_ROWID,
-				KEY_LINE_ID,
-				KEY_LINE_NUMBER
+				KEY_LINE_NUMBER,
+				KEY_LINE_ID
 				
 		},
 		null, 

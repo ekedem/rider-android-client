@@ -160,7 +160,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				};
 				thread.start();
 			}
- 
+
 			/**
 			 * initial loading and creating of the google map view
 			 * @param mapView - the map view of the app
@@ -193,7 +193,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				// trying to get the currect location
 				findLocation();
 				showCurrentLocation();
-				
+
 				//update line db for first time
 				initLinesDB(model.getUser().getUserID());
 			}
@@ -307,20 +307,18 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			 * when a bus line number was choose, a request is sent to the server based on the request type
 			 * @param isCheckInRequest - if true then the request is for CheckIn
 			 */
-			public void onBusNumberChooser(String lineNumber,boolean isCheckInRequest) {
+			public void onBusNumberChooser(String lineNumber, String lineID, boolean isCheckInRequest) {
 				progressDialog.setMessage("Loading...");
 				progressDialog.show();
 
 				try {
-					int line = Integer.parseInt(lineNumber);
-
 					if (isCheckInRequest) {
 						// need to set top false sometime
 						model.getUser().setCheckedIn(true);
-						proxy.checkInRequestToServer(line, model.getUser().getUserID());
+						proxy.checkInRequestToServer(lineNumber, lineID, model.getUser().getUserID());
 					} 
 					else {
-						proxy.LineRequestToServer(line, model.getUser().getUserID(), model.getUser().getLastKnownLatitude(),
+						proxy.LineRequestToServer(lineNumber, lineID, model.getUser().getUserID(), model.getUser().getLastKnownLatitude(),
 								model.getUser().getLastKnownLongitude());
 					}
 
@@ -419,7 +417,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			}
 
 			@Override
-			public void onLineResultFromServer(ServerResult result) {
+			public void onLineResultFromServer(final ServerResult result) {
 				ArrayList<Station> stations = result.getStations();
 				boolean showAllStations = prefs.getBoolean(MyPreferences.PREFS_SHOW_ALL_STATAIONS, false);;
 
@@ -444,7 +442,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 									currentType = station.getType();
 									currentStationIcon = blue;
 								}
-								overlays.get(i).setMarker(currentStationIcon);
+								overlays.get(overlays.size() - 1).setMarker(currentStationIcon);
 							}
 						}
 
@@ -465,7 +463,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 									currentType = station.getType();
 									currentStationIcon = blue;
 								}
-								overlays.get(i).setMarker(currentStationIcon);
+								overlays.get(overlays.size() - 1).setMarker(currentStationIcon);
 							}
 						}
 
@@ -480,7 +478,6 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 					progressDialog.dismiss();
 					ui.showErrorDialog("problem parsing the stations from the line request. Client side");
 				}
-
 			}
 
 			@Override
@@ -490,69 +487,76 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			}
 
 			@Override
-			public void onNavigationResultFromServer(ServerResult result) {
-				ArrayList<Station> stations = result.getStations();
-				Station sourceStation = stations.get(0);
-				Station destStation = stations.get(stations.size() - 1);
-				boolean showAllStations = prefs.getBoolean(MyPreferences.PREFS_SHOW_ALL_STATAIONS, false);
+			public void onNavigationResultFromServer(final ServerResult result) {
+				runOnUiThread(new Runnable() {
 
-				try {
+					@Override
+					public void run() {
+						ArrayList<Station> stations = result.getStations();
+						Station sourceStation = stations.get(0);
+						Station destStation = stations.get(stations.size() - 1);
+						boolean showAllStations = prefs.getBoolean(MyPreferences.PREFS_SHOW_ALL_STATAIONS, false);
 
-					if (mapView != null) {
-						clearGoogleMapMarkers();
-						ArrayList<OverlayItem> overlays = new ArrayList<OverlayItem>();
-						GeoPoint geo = null;
-						Station station = null;
-						String currentType = stations.get(0).getType();
-						Drawable currentStationIcon = red;
-						for(int i=0 ; i < stations.size() ; i++) {
-							if (showAllStations || (i == 0) || (i == stations.size()-1)) {
-								station = stations.get(i);
-								geo = station.getLocation().toGeo();
-								overlays.add(new OverlayItem(geo, station.getName() , station.getLineNumber() + " " + station.getTime()));
-								System.out.println("station " + i + ",type = " + station.getType());
-								if (!currentType.equals(station.getType())){
-									currentType = station.getType();
-									currentStationIcon = blue;
+						try {
+
+							if (mapView != null) {
+								clearGoogleMapMarkers();
+								ArrayList<OverlayItem> overlays = new ArrayList<OverlayItem>();
+								GeoPoint geo = null;
+								Station station = null;
+								String currentType = stations.get(0).getType();
+								Drawable currentStationIcon = red;
+								for(int i=0 ; i < stations.size() ; i++) {
+									if (showAllStations || (i == 0) || (i == stations.size()-1)) {
+										station = stations.get(i);
+										geo = station.getLocation().toGeo();
+										overlays.add(new OverlayItem(geo, station.getName() , station.getLineNumber() + " " + station.getTime()));
+										System.out.println("station " + i + ",type = " + station.getType());
+										if (!currentType.equals(station.getType())){
+											currentType = station.getType();
+											currentStationIcon = blue;
+										}
+										overlays.get(overlays.size() - 1).setMarker(currentStationIcon);
+
+									}
 								}
-								overlays.get(i).setMarker(currentStationIcon);
 
+								addOverlayToMap(overlays);
 							}
-						}
+							else {
+								ArrayList<org.osmdroid.views.overlay.OverlayItem> overlays = new ArrayList<org.osmdroid.views.overlay.OverlayItem>();
+								org.osmdroid.util.GeoPoint geo = null;
+								Station station = null;
+								String currentType = stations.get(0).getType();
+								Drawable currentStationIcon = red;
 
-						addOverlayToMap(overlays);
-					}
-					else {
-						ArrayList<org.osmdroid.views.overlay.OverlayItem> overlays = new ArrayList<org.osmdroid.views.overlay.OverlayItem>();
-						org.osmdroid.util.GeoPoint geo = null;
-						Station station = null;
-						String currentType = stations.get(0).getType();
-						Drawable currentStationIcon = red;
-
-						for(int i=0 ; i < stations.size() ; i++) {
-							if (showAllStations || (i == 0) || (i == stations.size()-1)) {
-								station = stations.get(i);
-								geo = new org.osmdroid.util.GeoPoint(Double.parseDouble(station.getLatitude()), Double.parseDouble(station.getLongitude()));
-								overlays.add(new org.osmdroid.views.overlay.OverlayItem(station.getName() , station.getLineNumber(),geo));
-								System.out.println("station " + i + ",type = " + station.getType());
-								if (!currentType.equals(station.getType())){
-									currentType = station.getType();
-									currentStationIcon = blue;
+								for(int i=0 ; i < stations.size() ; i++) {
+									if (showAllStations || (i == 0) || (i == stations.size()-1)) {
+										station = stations.get(i);
+										geo = new org.osmdroid.util.GeoPoint(Double.parseDouble(station.getLatitude()), Double.parseDouble(station.getLongitude()));
+										overlays.add(new org.osmdroid.views.overlay.OverlayItem(station.getName() , station.getLineNumber(),geo));
+										System.out.println("station " + i + ",type = " + station.getType());
+										if (!currentType.equals(station.getType())){
+											currentType = station.getType();
+											currentStationIcon = blue;
+										}
+										overlays.get(i).setMarker(currentStationIcon);
+									}
 								}
-								overlays.get(i).setMarker(currentStationIcon);
+
+								addOSOverlayToMap(overlays);
 							}
+
+							ui.setBarTextHeader(destStation.getLineNumber());
+							progressDialog.dismiss();
+							showLocation(Double.parseDouble(sourceStation.getLatitude()), Double.parseDouble(sourceStation.getLongitude()));
+						} catch (Exception e) {
+							progressDialog.dismiss();
+							ui.showErrorDialog("problem parsing the stations from the Navigation request. Client side");
 						}
-
-						addOSOverlayToMap(overlays);
 					}
+				});
 
-					ui.setBarTextHeader(destStation.getLineNumber());
-					progressDialog.dismiss();
-					showLocation(Double.parseDouble(sourceStation.getLatitude()), Double.parseDouble(sourceStation.getLongitude()));
-				} catch (Exception e) {
-					progressDialog.dismiss();
-					ui.showErrorDialog("problem parsing the stations from the Navigation request. Client side");
-				}
 			}
 
 			@Override
@@ -643,8 +647,8 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 		}
 		riderdb.close();
 	}
-	
-	
+
+
 	/**
 	 * sets the correct notification images for both GPS and INTERNET
 	 */
@@ -673,6 +677,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 		while (cLine.moveToNext()) {
 			String lineNumber = cLine.getString(1);
 			String lineID = cLine.getString(2);
+			//			System.out.println("line Number = " + lineNumber + ", Line id = " + lineID);
 			model.getLines().add(new Line(lineNumber, lineID));
 		}
 
@@ -918,11 +923,14 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			if (lastKnownLocation == null) {
 				System.out.println("GPS location");
 				lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			} 
+			else {
+				System.out.println("Network location");
 			}
-			
+
 			model.getUser().setLastKnownLatitude(lastKnownLocation.getLatitude());
 			model.getUser().setLastKnownLongitude(lastKnownLocation.getLongitude());
-			
+
 		} catch (Exception e) {
 		}
 	}
@@ -940,9 +948,11 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 					if (mapView != null) {
 						// if there isnt any known location different from the default, tell the user and keep waiting for it
 						if ((model.getUser().getLastKnownLatitude() == User.TEL_AVIV_LATITUDE) || (model.getUser().getLastKnownLongitude() == User.TEL_AVIV_LONGITUDE)) {
+							System.out.println("show location status");
 							ui.setCurrentLocationStatus(true);
 						}
 						else {
+							ui.setCurrentLocationStatus(false);
 							// the last location
 							GeoPoint location = locationToGeo(model.getUser().getLastKnownLatitude(), model.getUser().getLastKnownLongitude());
 							mapControl = mapView.getController();
@@ -1126,10 +1136,10 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"contact@thesocialrider.com"});
 			i.putExtra(Intent.EXTRA_SUBJECT, "Rider report from: " + model.getUser().getEmail());
 			try {
-			    startActivity(Intent.createChooser(i, "Send mail..."));
+				startActivity(Intent.createChooser(i, "Send mail..."));
 			} catch (android.content.ActivityNotFoundException ex) {
 			}
-			
+
 			mySharedPreferences.edit().remove(MyPreferences.PREFS_CONTACT).commit();
 		}
 		super.onStart();
@@ -1139,7 +1149,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

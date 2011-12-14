@@ -109,7 +109,9 @@ public class ResultMarshallerJson implements ResultMarshaller {
 		} 
 		else if (resource.equals(RiderProxy.LOGIN_REQUEST_RESOURCE)) {
 			result.setLoginStatus("true".equals(json.getString(LOGIN_STATUS).toLowerCase()));
-			result.setUserID(Integer.parseInt(json.getString(USER_ID)));
+			if (result.isLoginStatus()) {
+				result.setUserID(Integer.parseInt(json.getString(USER_ID)));
+			}
 		} 
 		else if(resource.equals(RiderProxy.UPDATE_LINE_RESOURCE)) {
 			for(int i=0 ; i < Integer.parseInt(json.getString(NUM_OF_LINES)) ; i++) {

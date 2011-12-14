@@ -137,12 +137,12 @@ public class RiderProxy {
 
 	/**
 	 * sends the check in details to the server
-	 * @param line - the line which the user is riding on
+	 * @param lineNumber - the line which the user is riding on
 	 * @param userID - the id of the user
 	 */
-	public void checkInRequestToServer(final int line,final int userID){
+	public void checkInRequestToServer(final String lineNumber, final String lineID, final int userID){
 
-		final String url = baseUrl + CHECKIN_RESOURCE + "&line=" + line + "&userID=" + userID;
+		final String url = baseUrl + CHECKIN_RESOURCE + "&line=" + lineNumber + "&userID=" + userID + "&lineID=" + lineID;
 		Runnable task = new Runnable() {
 			public void run() {
 				try {
@@ -152,7 +152,7 @@ public class RiderProxy {
 					}
 				} catch (Exception e) {
 					// when there is a problem connecting to the server
-					notifyFailure(e.toString() + " : Checkin resource, line= " + line + ", userID= " + userID);
+					notifyFailure(e.toString() + " : Checkin resource, line= " + lineNumber + ", userID= " + userID);
 				}
 			}
 		};
@@ -161,13 +161,13 @@ public class RiderProxy {
 
 	/**
 	 * send the line request from of the user to the server
-	 * @param line - the line the user wants to ride on
+	 * @param lineNumber - the line the user wants to ride on
 	 * @param userID - the user id
 	 * @param latitude/longitude - the last known location of the user
 	 */
-	public void LineRequestToServer(final int line,final int userID,double latitude,double longitude){
+	public void LineRequestToServer(final String lineNumber, final String lineID, final int userID,double latitude,double longitude){
 
-		final String url = baseUrl + LINE_RESOURCE  + "&line=" + line + "&userID=" + userID 
+		final String url = baseUrl + LINE_RESOURCE  + "&line=" + lineNumber + "&userID=" + userID + "&lineID=" + lineID 
 		+ "&lat=" + latitude + "&long=" + longitude ;
 		Runnable task = new Runnable() {
 			public void run() {
@@ -183,7 +183,7 @@ public class RiderProxy {
 					}
 				} catch (Exception e) {
 					// when there is a problem connecting to the server
-					notifyFailure(e.toString() + " : Line resource, line= " + line + ", userID= " + userID);
+					notifyFailure(e.toString() + " : Line resource, line= " + lineNumber + ", userID= " + userID);
 				}
 			}
 		};

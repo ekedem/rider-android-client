@@ -23,7 +23,7 @@ public interface UiListener {
 	public void onSearchAddressRequest(String address);
 	public void onExitRequest();
 	public void onNavigateRequest(String source,String destination);
-	public void onBusNumberChooser(String lineNumber,boolean isCheckInRequest);
+	public void onBusNumberChooser(String lineNumber,String lineID, boolean isCheckInRequest);
 	public void onWakeUpRequest();
 	public void onReportRequest();
 	public void onErrorRequest(String errorMessage);
