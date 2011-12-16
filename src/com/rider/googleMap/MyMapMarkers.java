@@ -24,10 +24,6 @@ public class MyMapMarkers extends ItemizedOverlay {
 		this.defaultMarker = defaultMarker;
 	}
 
-	public void setDefaultMarker(Drawable marker){
-		this.defaultMarker = defaultMarker;
-	}
-	
 	public void setUi(RiderUi ui) {
 		this.ui = ui;
 	}
@@ -64,10 +60,6 @@ public class MyMapMarkers extends ItemizedOverlay {
 	protected boolean onTap(int index) {
 		OverlayItem item = mOverlays.get(index);
 		ui.showBusDialog(item.getTitle());
-		//	  AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-		//	  dialog.setTitle(item.getTitle());
-		//	  dialog.setMessage(item.getSnippet());
-		//	  dialog.show();
 		return true;
 	}
 

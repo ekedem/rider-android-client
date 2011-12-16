@@ -25,7 +25,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -35,11 +34,11 @@ import android.util.AttributeSet;
 import android.view.InflateException;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.LayoutInflater.Factory;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.LayoutInflater.Factory;
 import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
@@ -64,6 +63,7 @@ import com.rider.model.User;
 import com.rider.proxy.RiderProxy;
 import com.rider.proxy.RiderProxyListener;
 import com.rider.view.ActivityAsViewOwner;
+import com.rider.view.PathStation;
 import com.rider.view.RiderUi;
 
 public class MainActivity extends MapActivity implements OnSharedPreferenceChangeListener {
@@ -432,6 +432,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 						Station station = null;
 						String currentType = stations.get(0).getType();
 						Drawable currentStationIcon = red;
+						GeoPoint lastStation = null;
 						for(int i=0 ; i < stations.size() ; i++) {
 							if (showAllStations || (i == result.getClosestStationIndex())) {
 								station = stations.get(i);
@@ -443,6 +444,14 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 									currentStationIcon = blue;
 								}
 								overlays.get(overlays.size() - 1).setMarker(currentStationIcon);
+								
+//								if ((lastStation != null) && (geo != null)) {
+//									System.out.println("here painting");
+//									mapView.getOverlays().add(new PathStation(lastStation, geo, Color.RED));
+//									mapView.postInvalidate();
+//								}
+//								
+//								lastStation = geo;
 							}
 						}
 
