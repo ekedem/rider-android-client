@@ -239,7 +239,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 					@Override
 					public void run() {
-						progressDialog.setMessage("Connecting to server...");
+						progressDialog.setMessage(getResources().getString(R.string.connectingToServer));
 						progressDialog.show();
 						proxy.loginAndRegisterRequestToServer(email,password,isRegister);
 					}
@@ -266,7 +266,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 					mapView.invalidate();
 
 				} catch (Exception e) {
-					ui.displayMessage("No result found");
+//					ui.displayMessage("No result found");
 				}
 			}
 
@@ -281,7 +281,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			 * sends a navigation request from the user to the server to find buses  
 			 */
 			public void onNavigateRequest(String source, String destination) {
-				progressDialog.setMessage("Loading...");
+				progressDialog.setMessage(getResources().getString(R.string.loading));
 				progressDialog.show();
 
 				// the converted addresses as coordinates
@@ -308,7 +308,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			 * @param isCheckInRequest - if true then the request is for CheckIn
 			 */
 			public void onBusNumberChooser(String lineNumber, String lineID, boolean isCheckInRequest) {
-				progressDialog.setMessage("Loading...");
+				progressDialog.setMessage(getResources().getString(R.string.loading));
 				progressDialog.show();
 
 				try {
@@ -323,7 +323,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 					}
 
 				} catch (Exception e) {
-					ui.displayMessage("Incorrect bus line number");
+//					ui.displayMessage("Incorrect bus line number");
 				}
 			}
 
@@ -338,7 +338,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 			@Override
 			public void onErrorRequest(String errorMessage) {
-				progressDialog.setMessage("Reporting to server...");
+				progressDialog.setMessage(getResources().getString(R.string.errorReportingText));
 				progressDialog.show();
 				proxy.errorAppReportToServer(model.getUser().getUserID(),errorMessage);
 			}
@@ -409,7 +409,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 					@Override
 					public void run() {
 						progressDialog.dismiss();
-						ui.displayMessage(message);
+//						ui.displayMessage(message);
 						ui.showErrorDialog(message);
 					}
 				});
@@ -485,14 +485,15 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 					// returning the default marker
 				} catch (Exception e) {
 					progressDialog.dismiss();
-					ui.showErrorDialog("problem parsing the stations from the line request. Client side");
+//					ui.showErrorDialog("problem parsing the stations from the line request. Client side");
 				}
 			}
 
 			@Override
 			public void onCheckinResultFromServer(ServerResult result) {
 				progressDialog.dismiss();
-				ui.displayMessage("CheckedIn =" + result.isCheckinResult());
+				ui.setBarTextHeader("Checkin");
+//				ui.displayMessage("CheckedIn =" + result.isCheckinResult());
 			}
 
 			@Override
@@ -561,7 +562,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 							showLocation(Double.parseDouble(sourceStation.getLatitude()), Double.parseDouble(sourceStation.getLongitude()));
 						} catch (Exception e) {
 							progressDialog.dismiss();
-							ui.showErrorDialog("problem parsing the stations from the Navigation request. Client side");
+//							ui.showErrorDialog("problem parsing the stations from the Navigation request. Client side");
 						}
 					}
 				});
@@ -650,7 +651,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 		riderdb.open();
 		Cursor cLine =  riderdb.getAllLines();
 		if (cLine.moveToNext() == false) {
-			progressDialog.setMessage("Updating bus lines...");
+			progressDialog.setMessage(getResources().getString(R.string.updatingBusLinesText));
 			progressDialog.show();
 			proxy.updateLinesRequestToServer(userID);
 		}
@@ -686,7 +687,6 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 		while (cLine.moveToNext()) {
 			String lineNumber = cLine.getString(1);
 			String lineID = cLine.getString(2);
-			//			System.out.println("line Number = " + lineNumber + ", Line id = " + lineID);
 			model.getLines().add(new Line(lineNumber, lineID));
 		}
 
@@ -695,7 +695,6 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			String email = c.getString(1);
 			String password = c.getString(2);
 			int userID = Integer.parseInt(c.getString(3));
-
 			// updates the model from the database
 			model.getUser().updateUser(email, password, userID);
 			knownUser = true;
@@ -705,7 +704,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 		if (knownUser) {
 			ui.showLoginScreen();
-			progressDialog.setMessage("Connecting to server...");
+			progressDialog.setMessage(getResources().getString(R.string.connectingToServer));
 			progressDialog.show();
 			proxy.loginAndRegisterRequestToServer(model.getUser().getEmail(),model.getUser().getPassword(),false);
 		}
@@ -988,7 +987,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 					}
 
 				} catch(Exception e) {
-					ui.displayMessage("Problem getting GPS info");
+//					ui.displayMessage("Problem getting GPS info");
 				}
 			}
 		});
@@ -999,7 +998,6 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				try {
 
 					if (mapView != null) {
@@ -1017,7 +1015,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 						osmapView.postInvalidate();
 					}
 				} catch(Exception e) {
-					ui.displayMessage("Problem getting GPS info");
+//					ui.displayMessage("Problem getting GPS info");
 				}
 			}
 		});
@@ -1061,6 +1059,20 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 				break;
 			case R.layout.login_screen:
 				finish();
+				break;
+			case R.layout.tutorial:
+				// returning to the map view with its last state
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						if (mapView != null) {
+							ui.showMapScreen(mapView);
+						}
+						else {
+							ui.showOSMapScreen();
+						}
+					}
+				});
 				break;
 			default:
 				ui.showExitDialog();
@@ -1134,7 +1146,7 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 	protected void onStart() {
 		SharedPreferences mySharedPreferences = getSharedPreferences(MyPreferences.CUSTOM_PREFS, Activity.MODE_PRIVATE);
 		if (mySharedPreferences.getBoolean(MyPreferences.PREFS_LINES_UPDATE, false) == true) {
-			progressDialog.setMessage("Updating bus lines...");
+			progressDialog.setMessage(getResources().getString(R.string.updatingBusLinesText));
 			progressDialog.show();
 			proxy.updateLinesRequestToServer(model.getUser().getUserID());
 			mySharedPreferences.edit().remove(MyPreferences.PREFS_LINES_UPDATE).commit();
@@ -1150,6 +1162,10 @@ public class MainActivity extends MapActivity implements OnSharedPreferenceChang
 			}
 
 			mySharedPreferences.edit().remove(MyPreferences.PREFS_CONTACT).commit();
+		}
+		else if (mySharedPreferences.getBoolean(MyPreferences.PREFS_TUTORIAL, false) == true) {
+			ui.showTutorial();
+			mySharedPreferences.edit().remove(MyPreferences.PREFS_TUTORIAL).commit();
 		}
 		super.onStart();
 	}

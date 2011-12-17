@@ -98,7 +98,7 @@ public final class R {
         public static final int cancelButtonInfo=0x7f0a0012;
         public static final int cancelButtonLine=0x7f0a0016;
         public static final int cancelButtonNav=0x7f0a0030;
-        public static final int checkInItem=0x7f0a0043;
+        public static final int checkInItem=0x7f0a0046;
         public static final int connectionButtonBarGoogle=0x7f0a0024;
         public static final int connectionButtonBarOS=0x7f0a0037;
         public static final int connectivityImage=0x7f0a0005;
@@ -122,8 +122,8 @@ public final class R {
         public static final int infoText=0x7f0a0011;
         public static final int internetButtonBarGoogle=0x7f0a0023;
         public static final int internetButtonBarOS=0x7f0a0036;
-        public static final int lineItem=0x7f0a0040;
-        public static final int line_editext=0x7f0a003f;
+        public static final int lineItem=0x7f0a0043;
+        public static final int line_editext=0x7f0a0042;
         public static final int line_layout=0x7f0a0013;
         public static final int linesSpinner=0x7f0a0017;
         public static final int linesUpdateButton=0x7f0a003b;
@@ -137,7 +137,7 @@ public final class R {
         public static final int navNotFound=0x7f0a002b;
         public static final int navNotFoundLayout=0x7f0a002a;
         public static final int navigate_layout=0x7f0a002d;
-        public static final int navigationItem=0x7f0a0041;
+        public static final int navigationItem=0x7f0a0044;
         public static final int okButton=0x7f0a000d;
         public static final int okButtonBus=0x7f0a0003;
         public static final int okButtonLine=0x7f0a0015;
@@ -148,13 +148,16 @@ public final class R {
         public static final int report_editext=0x7f0a0039;
         public static final int report_layout=0x7f0a0038;
         public static final int sendButtonError=0x7f0a0009;
-        public static final int settingsItem=0x7f0a0044;
+        public static final int settingsItem=0x7f0a0047;
         public static final int settingsLayout=0x7f0a003a;
-        public static final int showMeItem=0x7f0a0042;
+        public static final int showMeItem=0x7f0a0045;
         public static final int source_editext=0x7f0a0032;
         public static final int stationNameText=0x7f0a0002;
         public static final int textHeaderGoogle=0x7f0a0025;
-        public static final int wakeup_layout=0x7f0a003e;
+        public static final int tutorialHeader=0x7f0a003f;
+        public static final int tutorialLayout=0x7f0a003e;
+        public static final int tutorialText=0x7f0a0040;
+        public static final int wakeup_layout=0x7f0a0041;
     }
     public static final class layout {
         public static final int bus_popup=0x7f030000;
@@ -180,7 +183,8 @@ public final class R {
         public static final int spinner_text_view=0x7f030014;
         public static final int startup_screen=0x7f030015;
         public static final int status_info_button=0x7f030016;
-        public static final int wakeup_screen=0x7f030017;
+        public static final int tutorial=0x7f030017;
+        public static final int wakeup_screen=0x7f030018;
     }
     public static final class menu {
         public static final int option_menu=0x7f090000;
@@ -194,10 +198,12 @@ public final class R {
         public static final int cancel_button=0x7f070009;
         public static final int checkInMenu=0x7f07000c;
         public static final int clearMenu=0x7f070012;
+        public static final int connectingToServer=0x7f070029;
         public static final int contactHint=0x7f070026;
         public static final int contactText=0x7f070025;
         public static final int destinationAddressHint=0x7f07001d;
         public static final int email_hint=0x7f070004;
+        public static final int errorReportingText=0x7f07002b;
         public static final int exitMenu=0x7f07000f;
         public static final int hello=0x7f070000;
         public static final int helpMenu=0x7f070013;
@@ -206,6 +212,7 @@ public final class R {
         public static final int linePrefixTopBar=0x7f070024;
         public static final int linesChooserTitle=0x7f070003;
         public static final int linesUpdateSuccessfully=0x7f070027;
+        public static final int loading=0x7f07002a;
         public static final int locale=0x7f070018;
         public static final int login_button=0x7f070006;
         public static final int mapOptionLayersMenu=0x7f070016;
@@ -223,9 +230,13 @@ public final class R {
         public static final int showMeMenu=0x7f070010;
         public static final int sourceAddressHint=0x7f07001c;
         public static final int status_welcome_message=0x7f07000b;
+        public static final int tutorialHeader=0x7f07002e;
+        public static final int tutorialHint=0x7f07002d;
+        public static final int tutorialText=0x7f07002c;
         public static final int updateButton=0x7f07001f;
         public static final int updateLinesHint=0x7f070022;
         public static final int updateLinesText=0x7f070023;
+        public static final int updatingBusLinesText=0x7f070028;
     }
     public static final class style {
         public static final int Animations=0x7f080002;

@@ -7,7 +7,7 @@
    android:key="showAllStations"
    android:title="@string/showAllStationsText"
    android:summary="@string/showAllStationsHint"
-   android:defaultValue="false"
+   android:defaultValue="true"
    />
 <Preference
     android:title="@string/updateLinesText"
@@ -15,6 +15,10 @@
     android:key="linesUpdate"
     android:defaultValue="false"
      />
+<Preference
+    android:title="@string/tutorialText"
+    android:summary="@string/tutorialHint"
+    android:key="tutorial" />
  <Preference
     android:title="@string/contactText"
     android:summary="@string/contactHint"

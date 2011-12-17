@@ -35,10 +35,17 @@
 <string name="showAllStationsText">הצג את כל התחנות</string>
 
 <string name="showAllStationsHint">סמנו אם ברצונכם לראות את כל התחנות במסלול</string>
-<string name="updateLinesHint">לחץ כאן אם ברצונך לעדכן את מספרי קווי האוטובוס</string>
+<string name="updateLinesHint">לחצו כאן בכדי לעדכן את קווי האוטובוס</string>
 <string name="updateLinesText">עדכן קווי אוטובוס</string>
 <string name="linePrefixTopBar">קו</string>
 <string name="contactText">צור קשר</string>
 <string name="contactHint">לחצו כאן לשליחת מייל </string>
 <string name="linesUpdateSuccessfully">הקווים עודכנו בהצלחה</string>
+<string name="updatingBusLinesText">מעדכן קווים</string>
+<string name="connectingToServer">מתחבר לשרת</string>
+<string name="loading">טוען נתונים</string>
+<string name="errorReportingText">מדווח לשרת</string>
+<string name="tutorialText">הדרכה</string>
+<string name="tutorialHint">לחצו כאן לקבל הדרכה על האפליקציה</string>
+<string name="tutorialHeader">הדרכה</string>
 </resources>

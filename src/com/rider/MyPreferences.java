@@ -12,6 +12,7 @@ public class MyPreferences extends PreferenceActivity{
 	public final static String CUSTOM_PREFS = "myPrefs";
 	public final static String PREFS_LINES_UPDATE = "linesUpdate";
 	public final static String PREFS_CONTACT = "contact";
+	public final static String PREFS_TUTORIAL = "tutorial";
 	public final static String PREFS_SHOW_ALL_STATAIONS = "showAllStations";
 	
 	SharedPreferences customSharedPreference;
@@ -22,6 +23,7 @@ public class MyPreferences extends PreferenceActivity{
 		addPreferencesFromResource(R.xml.preferences);
 		customSharedPreference = getSharedPreferences(CUSTOM_PREFS, Activity.MODE_PRIVATE);
 		Preference contact = (Preference) findPreference(PREFS_CONTACT);
+		Preference tutorial = (Preference) findPreference(PREFS_TUTORIAL);
 		Preference linesUpdate = (Preference) findPreference(PREFS_LINES_UPDATE);
 		contact.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 
@@ -41,6 +43,18 @@ public class MyPreferences extends PreferenceActivity{
 			public boolean onPreferenceClick(Preference preference) {
 				editor = customSharedPreference.edit();
 				editor.putBoolean(PREFS_LINES_UPDATE,true);
+				editor.commit();
+				finish();
+				return true;
+			}
+		});
+		
+		tutorial.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				editor = customSharedPreference.edit();
+				editor.putBoolean(PREFS_TUTORIAL,true);
 				editor.commit();
 				finish();
 				return true;
